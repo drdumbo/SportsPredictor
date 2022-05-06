@@ -43,9 +43,11 @@ simulation_details = {"name": "series",
 # .... Event -> Results (1...nout) -> Event -> Results (1...nout) ->....
 # when an Event is generated, all this is baked into it by the EventFactory
 
+# FIXME.  Need to pass in some decent paameters to the EventFactory so that sth reasonable is generated
+# FIXME.  At minimum we need to maximum size of the tree we are generating.
 event_factory = EventFactory()
 event_tree = None
-if event=event_factory.next():
+while event=event_factory.next():
     # get the next event, and put it on the tree
     if not event_tree:
         event_tree = event
@@ -53,9 +55,14 @@ if event=event_factory.next():
     # produce a result for the event, and put it on the tree
     event_tree.set_result()
     # consolidate the tree
+    # TODO.  Probably this will have minimal effect in pruning hte tree: it won't allow
+    # TODO. the tree to grow to say 80 games.  But it will probably allow it to make it to say 20.
+    # TODO.  size of the set is given by the multinomial distribution.
     event_tree.consolidate()
 
-
+# now have finished building the series of events
+# the event tree is consolidated
+# do some analysis or print out the results
 
 
 # Connor was here!!!
