@@ -43,7 +43,8 @@ class Event():
 
     def __init__(self, partlist: list):
         self.partlist = partlist  # a list of the participants in the event
-        pass
+        self.previous = None        # the previous event before this one
+        self.resultlist = None      # what happened after this event; multiple outcomes possible
 
 
 # --------------------------------------------------------------------
@@ -74,7 +75,7 @@ class EventFactory():
                 EventFactory.event_factory = self.event_factory_fixed
                 EventFactory.participant_factory = self.participant_factory_fixed
             else:
-                raise EventException(f"unknown event builder type: {type}")
+                raise EventException(f"unknown event factory type: {type}")
 
     def event_factory_fixed(self):
         # appropriate for a fixed pair of opponents
@@ -85,6 +86,7 @@ class EventFactory():
         pass
 
     def next(self):
+        partlist = self.participant_factory.next()
         return Event()
 
 
