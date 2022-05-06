@@ -1,3 +1,5 @@
+from Participants import ParticipantException, ParticipantFactory, Participant
+
 # an Event is something like a meeting, or a game, or whatever - between two participants
 # (which could be teams/people/machines/insects/...).
 # the Events are nodes in a tree
@@ -73,7 +75,7 @@ class EventFactory():
             EventFactory.type = type
             if type == "fixed":  # simplest campaign, n games against same opponent
                 EventFactory.event_factory = self.event_factory_fixed
-                EventFactory.participant_factory = self.participant_factory_fixed
+                EventFactory.participant_factory = ParticipantFactory() #FIXME.  Need parameters for this factory
             else:
                 raise EventException(f"unknown event factory type: {type}")
 
@@ -86,9 +88,11 @@ class EventFactory():
         pass
 
     def next(self):
+        # for now just try to generate it
+        # FIXME.  This doesn't work.
+        #  -The event has to be known to exist.
+        #  -If it does, then the event will generate the participants, results, etc.
         partlist = self.participant_factory.next()
-        return Event()
-
-
+        return Event( partlist )    # FIXME.  Put in the other parameters that are needed
 
 

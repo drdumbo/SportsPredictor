@@ -1,10 +1,11 @@
 import random
 
-# for now this is a dictionary which provides a way to look up a
+# for now this is a dictionary which provides a way to get a
 # dictionary of participant details by name, e.g.:
 # dict: { name, details_type, {details} }
-
-# in general these details should come from a function or some other dynamic source, e.g., nhl.com stats page
+#
+# in general these details should come from a function or some other dynamic source,
+# e.g., nhl.com stats page
 # but for now we just pull in some basic data
 
 # FIXME.  HACK: participant list element[0] is "Team A".
@@ -57,13 +58,13 @@ class ParticipantFactory():
                 self._factory = _participant_factory_fixed
                 if len(pdetails["names"]) == 2:
                     self.p1, self.p2 = pdetails["names"]
-                else
+                else:
                     raise ParticipantException(f"need a list of two names.  Got: {pdetails['names']}")
             elif self.factory_type == "random":
                 self._factory = _participant_factory_random
             elif self.factory_type == "sequential":
                 self._factory = _participant_factory_sequential
-            else
+            else:
                 raise ParticipantException(f"unrecognized participant factory: {self.factory_type}")
         except KeyError as ke:
             raise ParticipantException(f"participant details need a 'type' and possibly 'names': {pdetails}")
@@ -92,7 +93,7 @@ class ParticipantFactory():
                 raise ParticipantException(f"participant doesn't have a name attribute: {p}")
 
         # but if the name you are looking for isn't there, then raise an exception:
-        raise ParticipantException(f"no such participant: {pname}")
+        raise ParticipantException(f"no such participant: {self.p2}")
 
     def _participant_factory_sequential(self, choice: int=0)->dict:
         # get the next participant
