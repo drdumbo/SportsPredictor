@@ -43,6 +43,8 @@ simulation_details = {"name": "series",
 # .... Event -> Results (1...nout) -> Event -> Results (1...nout) ->....
 # when an Event is generated, all this is baked into it by the EventFactory
 
+# FIXME.  Need to pass in some decent paameters to the EventFactory so that sth reasonable is generated
+# FIXME.  At minimum we need to maximum size of the tree we are generating.
 event_factory = EventFactory()
 event_tree = None
 while event=event_factory.next():
