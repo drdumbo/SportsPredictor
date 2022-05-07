@@ -67,12 +67,14 @@ class EventFactory():
         - one fixed mechanism for calculating the probability of each event outcome
         - one fixed mechanism for calculating the outcome set from each event
 
-        details = {"campaign_type": "best-of-series",
-                      "campaign_size": 7,
-                      "game": {"participant_choice": "fixed",
-                            "participants": [TML, TBL]},
-                      "outcomes": ["win", "tie", "loss"]
-                      }
+        details = {"campaign": {"type": "best-of-series",
+                                    "length": 7},
+                       "versus": {"participant_choice": "fixed",
+                                "participants": [participant_TML, participant_TBL]},
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss"]}
+                       }
+
 	"""
     participant_factory = None
     event_factory = None
@@ -80,15 +82,15 @@ class EventFactory():
 
     def __init__(self, details: dict):
         if not EventFactory.event_factory:
-            EventFactory.type = details["campaign_type"]
-            if type == "best-of-series":  # best-of-n games against same opponent
+            EventFactory.type = details["campaign"]["type"]
+            if EventFactory.type == "best-of-series":  # best-of-n games against same opponent
                 EventFactory.event_factory = self.event_factory_best_of
-                EventFactory.participant_factory = ParticipantFactory(details["game"])
-            elif type == "fixed-series":  # fixed length campaign, n games against same opponent
+                EventFactory.participant_factory = ParticipantFactory(details["versus"])
+            elif EventFactory.type == "fixed-series":  # fixed length campaign, n games against same opponent
                 EventFactory.event_factory = self.event_factory_fixed
-                EventFactory.participant_factory = ParticipantFactory(details["game"])
+                EventFactory.participant_factory = ParticipantFactory(details["versus"])
             else:
-                raise EventException(f"unknown event factory type: {type}")
+                raise EventException(f"unknown event factory type: {EventFactory.type}")
 
     def event_factory_best_of(self):
         # appropriate for a campaign of "best of" n

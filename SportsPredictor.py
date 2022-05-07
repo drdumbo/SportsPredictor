@@ -1,4 +1,5 @@
 from Events import EventFactory
+from pprint import pprint
 
 # the idea is to predict the probability of certain outcomes in a sporting series.
 #
@@ -88,8 +89,7 @@ simulation3_details = {"campaign": {"type": "fixed-series",
 
 sim = simulation1_details
 
-print(f"sim details: {sim}")
-exit(0)
+pprint(sim, depth=4)
 
 # FIXME.  Need to pass in some parameters to the EventFactory so that sth reasonable is generated
 # FIXME.  At minimum we need to maximum size of the tree we are generating.
