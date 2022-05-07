@@ -60,33 +60,48 @@ class EventFactory():
 	        * If there is more than one outcomes - then a probability is calculated for each
 	        * If there is exactly one outcome - then the probability is 1 for that outcome and 0 all others
 	        * via event_outcome_probability / event_outcome_factory
+
     the simplest sort of Factory would produce
         - two fixed participants
         - two fixed outcomes (win/lose)
         - one fixed mechanism for calculating the probability of each event outcome
         - one fixed mechanism for calculating the outcome set from each event
+
+        details = {"campaign_type": "best-of-series",
+                      "campaign_size": 7,
+                      "game": {"participant_choice": "fixed",
+                            "participants": [TML, TBL]},
+                      "outcomes": ["win", "tie", "loss"]
+                      }
 	"""
     participant_factory = None
     event_factory = None
     type = None
 
-    def __init__(self, type: str):
+    def __init__(self, details: dict):
         if not EventFactory.event_factory:
-            EventFactory.type = type
-            if type == "fixed":  # simplest campaign, n games against same opponent
-                pdetails = {"type": "fixed",
-                            "names": ["Toronto Maple Leafs", "Tampa Bay Lightning"]}
+            EventFactory.type = details["campaign_type"]
+            if type == "best-of-series":  # best-of-n games against same opponent
+                EventFactory.event_factory = self.event_factory_best_of
+                EventFactory.participant_factory = ParticipantFactory(details["game"])
+            elif type == "fixed-series":  # fixed length campaign, n games against same opponent
                 EventFactory.event_factory = self.event_factory_fixed
-                EventFactory.participant_factory = ParticipantFactory(pdetails)
+                EventFactory.participant_factory = ParticipantFactory(details["game"])
             else:
                 raise EventException(f"unknown event factory type: {type}")
 
-    def event_factory_fixed(self):
-        # appropriate for a fixed pair of opponents
+    def event_factory_best_of(self):
+        # appropriate for a campaign of "best of" n
+        # generate players (participant factory)
+        # determine outcomes(s)
+        # determine if there is a victor
         pass
 
-    def event_factory_from_list(self):
-        # TODO: implement this at some far far distant time
+    def event_factory_fixed(self):
+        # appropriate for a campaign of exactly n
+        # generate players
+        # determine outcomes(s)
+        # determine if there is a victor
         pass
 
     def next(self):
