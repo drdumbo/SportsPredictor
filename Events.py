@@ -74,8 +74,10 @@ class EventFactory():
         if not EventFactory.event_factory:
             EventFactory.type = type
             if type == "fixed":  # simplest campaign, n games against same opponent
+                pdetails = {"type": "fixed",
+                            "names": ["Toronto Maple Leafs", "Tampa Bay Lightning"]}
                 EventFactory.event_factory = self.event_factory_fixed
-                EventFactory.participant_factory = ParticipantFactory() #FIXME.  Need parameters for this factory
+                EventFactory.participant_factory = ParticipantFactory(pdetails)
             else:
                 raise EventException(f"unknown event factory type: {type}")
 
