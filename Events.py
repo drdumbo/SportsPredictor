@@ -1,3 +1,5 @@
+from Participants import ParticipantException, ParticipantFactory, Participant
+
 # an Event is something like a meeting, or a game, or whatever - between two participants
 # (which could be teams/people/machines/insects/...).
 # the Events are nodes in a tree
@@ -58,37 +60,57 @@ class EventFactory():
 	        * If there is more than one outcomes - then a probability is calculated for each
 	        * If there is exactly one outcome - then the probability is 1 for that outcome and 0 all others
 	        * via event_outcome_probability / event_outcome_factory
+
     the simplest sort of Factory would produce
         - two fixed participants
         - two fixed outcomes (win/lose)
         - one fixed mechanism for calculating the probability of each event outcome
         - one fixed mechanism for calculating the outcome set from each event
+
+        details = {"campaign": {"type": "best-of-series/fixed-series",
+                                    "length": <integer>},
+                       "versus": {"participant_choice": "fixed/random/sequential",
+                                "participants": [<p1>, [<p2list>]] },
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss", "otwin", "otloss", "tie"]}
+                       }
 	"""
-    participant_factory = None
-    event_factory = None
+    _participant_factory = None
+    _event_factory = None
     type = None
 
-    def __init__(self, type: str):
-        if not EventFactory.event_factory:
-            EventFactory.type = type
-            if type == "fixed":  # simplest campaign, n games against same opponent
-                EventFactory.event_factory = self.event_factory_fixed
-                EventFactory.participant_factory = self.participant_factory_fixed
+    def __init__(self, details: dict):
+        if not EventFactory._event_factory:
+            EventFactory.type = details["campaign"]["type"]
+            if EventFactory.type == "best-of-series":  # best-of-n games against same opponent
+                EventFactory._event_factory = self._event_factory_best_of
+                EventFactory._participant_factory = ParticipantFactory(details["versus"])
+            elif EventFactory.type == "fixed-series":  # fixed length campaign, n games against same opponent
+                EventFactory._event_factory = self._event_factory_fixed
+                EventFactory._participant_factory = ParticipantFactory(details["versus"])
             else:
-                raise EventException(f"unknown event factory type: {type}")
+                raise EventException(f"unknown event factory type: {EventFactory.type}")
 
-    def event_factory_fixed(self):
-        # appropriate for a fixed pair of opponents
+    def _event_factory_best_of(self, current=0):
+        # appropriate for a campaign of "best of" n
+        # generate players (participant factory)
+        # determine outcomes(s)
+        # determine if there is a victor
         pass
 
-    def event_factory_from_list(self):
-        # TODO: implement this at some far far distant time
+    def _event_factory_fixed(self, current=0):
+        # appropriate for a campaign of exactly n
+        # generate players
+        # determine outcomes(s)
+        # determine if there is a victor
         pass
 
     def next(self):
-        partlist = self.participant_factory.next()
-        return Event()
-
-
+        # for now just try to generate it
+        # FIXME.  This doesn't work.
+        #  -The event has to be known to exist.
+        #  -If it does, then the event will generate the participants, results, etc.
+        partlist = EventFactory._participant_factory()
+        return Event( partlist )    # FIXME.  Put in the other parameters that are needed
 
 

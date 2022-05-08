@@ -1,3 +1,6 @@
+from Events import EventFactory
+from pprint import pprint
+
 # the idea is to predict the probability of certain outcomes in a sporting series.
 #
 # technically, do this in a simulation kind of way by making a tree of bidirectional nodes.
@@ -32,9 +35,62 @@
 # MAIN FUNCTION STARTS HERE
 # ====================================================================
 
-simulation_details = {"name": "series",
-                      "size": 7}
+participant_TML = { "name": "Toronto Maple Leafs",
+        "details_type": "short_team_stats",
+        "details": {"WIN": 54, "LOSS": 18, "TIES": 0, "OTLOSS": 7, "GF": 312, "GA": 252}}
+participant_TBL = { "name": "Tampa Bay Lightning",
+        "details_type": "short_team_stats",
+        "details": {"WIN": 51, "LOSS": 23, "TIES": 0, "OTLOSS": 8, "GF": 285, "GA": 228}}
+participant_BB = { "name": "Boston Bruins",
+        "details_type": "short_team_stats",
+        "details": {"WIN": 51, "LOSS": 26, "TIES": 0, "OTLOSS": 5, "GF": 253, "GA": 218}}
+participant_WAC = {"name": "Washington Capitals",
+        "details_type": "short_team_stats",
+        "details": {"WIN": 44, "LOSS": 26, "TIES": 0, "OTLOSS": 12, "GF": 270, "GA": 242}}
 
+participantlist = [ participant_TML, participant_TBL, participant_BB, participant_WAC ]
+
+# best-of-n series with fixed opponents
+# ... each game is win/loss (2)
+simulation1_details = {"campaign": {"type": "best-of-series",
+                                    "length": 7},
+                       "versus": {"participant_choice": "fixed",
+                                "participants": [participant_TML, [participant_TBL]]},
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss"]}
+                       }
+
+# fixed length series with fixed opponents
+# ... each game is win / loss / tie (3)
+simulation2_details = {"campaign": {"type": "fixed-series",
+                                    "length": 7},
+                       "versus": {"participant_choice": "fixed",
+                                "participants": [participant_TML, [participant_TBL]]},
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss", "tie"]}
+                       }
+
+# fixed length series with one fixed & one random
+# each game is reg-win / reg-loss / ot-win / ot-loss / tie (5)
+simulation3_details = {"campaign": {"type": "fixed-series",
+                                    "length": 7},
+                       "versus": {"participant_choice": "random",
+                                "participants": [participant_TML, participantlist[1:]]},
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss", "otwin", "otloss", "tie"]}
+                       }
+
+# fixed length series with one fixed & one sequential
+# each game is reg-win / reg-loss / ot-win / ot-loss (4)
+simulation4_details = {"campaign": {"type": "fixed-series",
+                                    "length": 7},
+                       "versus": {"participant_choice": "sequential",
+                                "participants": [participant_TML, participantlist[1:]]},
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss", "otwin", "otloss"]}
+                       }
+
+#
 # an Event says: who plays who (has a participant generator)
 # an Event knows: what are the possible Outcomes (i.e., the game type)
 # an Event knows: how to calculate the chance of each outcome (outcome generator, OG(pA, pB, Outcomes))
@@ -43,11 +99,15 @@ simulation_details = {"name": "series",
 # .... Event -> Results (1...nout) -> Event -> Results (1...nout) ->....
 # when an Event is generated, all this is baked into it by the EventFactory
 
-# FIXME.  Need to pass in some decent paameters to the EventFactory so that sth reasonable is generated
+sim = simulation1_details
+
+pprint(sim, depth=4)
+
+# FIXME.  Need to pass in some parameters to the EventFactory so that sth reasonable is generated
 # FIXME.  At minimum we need to maximum size of the tree we are generating.
-event_factory = EventFactory()
+event_factory = EventFactory(sim)
 event_tree = None
-while event=event_factory.next():
+for event in event_factory.next():
     # get the next event, and put it on the tree
     if not event_tree:
         event_tree = event
