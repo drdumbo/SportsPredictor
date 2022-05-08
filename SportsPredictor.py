@@ -107,22 +107,28 @@ pprint(sim, depth=4)
 # FIXME.  At minimum we need to maximum size of the tree we are generating.
 event_factory = EventFactory(sim)
 event_tree = None
-for event in event_factory.next():
-    # get the next event, and put it on the tree
+
+# get the next event
+while (event := event_factory.next()):
+    # produce a result for the event, and attach it to the event
+    event.set_result(sim)
+
+    # put the event and its result on the tree
     if not event_tree:
         event_tree = event
-    event_tree.add(event)
-    # produce a result for the event, and put it on the tree
-    event_tree.set_result()
+    else:
+        event_tree.add(event)
+
     # consolidate the tree
-    # TODO.  Probably this will have minimal effect in pruning hte tree: it won't allow
+    # TODO.  Probably this will have minimal effect in pruning the tree: it won't allow
     # TODO. the tree to grow to say 80 games.  But it will probably allow it to make it to say 20.
     # TODO.  size of the set is given by the multinomial distribution.
-    event_tree.consolidate()
+    event_tree.consolidate(sim)
 
 # now have finished building the series of events
 # the event tree is consolidated
 # do some analysis or print out the results
 
+event_tree.print()
 
 # Connor was here!!!
