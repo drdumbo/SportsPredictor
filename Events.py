@@ -48,6 +48,11 @@ class Event():
         self.previous = None        # the previous event before this one
         self.resultlist = None      # what happened after this event; multiple outcomes possible
 
+    def consolidate(self, sim: dict):
+        print("TODO: consolidate() not implemented")
+
+    def set_result(self, sim: dict):
+        print("TODO: set_result() not implemented")
 
 # --------------------------------------------------------------------
 
@@ -110,7 +115,7 @@ class EventFactory():
         # FIXME.  This doesn't work.
         #  -The event has to be known to exist.
         #  -If it does, then the event will generate the participants, results, etc.
-        partlist = EventFactory._participant_factory()
+        partlist = EventFactory._participant_factory.next()
         return Event( partlist )    # FIXME.  Put in the other parameters that are needed
 
 
