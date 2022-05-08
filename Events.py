@@ -44,15 +44,28 @@ class Event():
 	"""
 
     def __init__(self, partlist: list):
-        self.partlist = partlist  # a list of the participants in the event
-        self.previous = None        # the previous event before this one
-        self.resultlist = None      # what happened after this event; multiple outcomes possible
+        self.partlist = partlist    # a list of the participants in the event
+        self.last_result = None     # the result of the previous event
+        self.these_results = None     # list of the results of this event; multiple outcomes possible
+        self.event_level = 0
 
     def consolidate(self, sim: dict):
         print("TODO: consolidate() not implemented")
 
     def set_result(self, sim: dict):
         print("TODO: set_result() not implemented")
+
+    def add(self, e):
+        # add a new event to follow this one
+        if not self.these_results:
+            raise EventException(f"cannot have a new event because current event has no result")
+        for res in self.these_results:
+            # e.last_result = res
+            # res.add(e)
+            pass
+
+
+
 
 # --------------------------------------------------------------------
 
