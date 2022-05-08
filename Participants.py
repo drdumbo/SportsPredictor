@@ -12,10 +12,9 @@ import random
 pdetails = {"participant_choice": "fixed",
             "participants": [participant_TML, participant_TBL]},
 
-"""
-
 # FIXME.  HACK: participant list element[0] is "Team A".
-# FIXME.  The other team ("Team B") is chosen from the rest of the list.
+# FIXME.  The other team ("Team B") is chosen from the rest of the list
+
 participantlist = [
     { "name": "Toronto Maple Leafs",
       "details_type": "short_team_stats",
@@ -30,8 +29,7 @@ participantlist = [
      "details_type": "short_team_stats",
      "details": {"WIN": 44, "LOSS": 26, "TIES": 0, "OTLOSS": 12, "GF": 270, "GA": 242}}
 ]
-
-
+"""
 
 # --------------------------------------------------------------------
 
