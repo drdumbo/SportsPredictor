@@ -36,41 +36,42 @@ from pprint import pprint
 # ====================================================================
 
 participant_TML = { "name": "Toronto Maple Leafs",
-      "details_type": "short_team_stats",
+        "details_type": "short_team_stats",
         "details": {"WIN": 54, "LOSS": 18, "TIES": 0, "OTLOSS": 7, "GF": 312, "GA": 252}}
 participant_TBL = { "name": "Tampa Bay Lightning",
-      "details_type": "short_team_stats",
-      "details": {"WIN": 51, "LOSS": 23, "TIES": 0, "OTLOSS": 8, "GF": 285, "GA": 228}}
+        "details_type": "short_team_stats",
+        "details": {"WIN": 51, "LOSS": 23, "TIES": 0, "OTLOSS": 8, "GF": 285, "GA": 228}}
 participant_BB = { "name": "Boston Bruins",
-      "details_type": "short_team_stats",
-      "details": {"WIN": 51, "LOSS": 26, "TIES": 0, "OTLOSS": 5, "GF": 253, "GA": 218}}
+        "details_type": "short_team_stats",
+        "details": {"WIN": 51, "LOSS": 26, "TIES": 0, "OTLOSS": 5, "GF": 253, "GA": 218}}
 participant_WAC = {"name": "Washington Capitals",
-     "details_type": "short_team_stats",
-     "details": {"WIN": 44, "LOSS": 26, "TIES": 0, "OTLOSS": 12, "GF": 270, "GA": 242}}
+        "details_type": "short_team_stats",
+        "details": {"WIN": 44, "LOSS": 26, "TIES": 0, "OTLOSS": 12, "GF": 270, "GA": 242}}
 
 participantlist = [ participant_TML, participant_TBL, participant_BB, participant_WAC ]
 
 # best-of-n series with fixed opponents
+# ... each game is win/loss (2)
 simulation1_details = {"campaign": {"type": "best-of-series",
                                     "length": 7},
                        "versus": {"participant_choice": "fixed",
-                                "participants": [participant_TML, participant_TBL]},
+                                "participants": [participant_TML, [participant_TBL]]},
                        "outcomes": {"method": "fixed_outcome_statistic",
                                     "result_names": ["win", "loss"]}
                        }
 
 # fixed length series with fixed opponents
-# ... each game is win/lose only.
+# ... each game is win / loss / tie (3)
 simulation2_details = {"campaign": {"type": "fixed-series",
                                     "length": 7},
                        "versus": {"participant_choice": "fixed",
-                                "participants": [participant_TML, participant_TBL]},
+                                "participants": [participant_TML, [participant_TBL]]},
                        "outcomes": {"method": "fixed_outcome_statistic",
                                     "result_names": ["win", "loss", "tie"]}
                        }
 
 # fixed length series with one fixed & one random
-# each game is win / tie / lose
+# each game is reg-win / reg-loss / ot-win / ot-loss / tie (5)
 simulation3_details = {"campaign": {"type": "fixed-series",
                                     "length": 7},
                        "versus": {"participant_choice": "random",
@@ -79,6 +80,17 @@ simulation3_details = {"campaign": {"type": "fixed-series",
                                     "result_names": ["win", "loss", "otwin", "otloss", "tie"]}
                        }
 
+# fixed length series with one fixed & one sequential
+# each game is reg-win / reg-loss / ot-win / ot-loss (4)
+simulation4_details = {"campaign": {"type": "fixed-series",
+                                    "length": 7},
+                       "versus": {"participant_choice": "sequential",
+                                "participants": [participant_TML, participantlist[1:]]},
+                       "outcomes": {"method": "fixed_outcome_statistic",
+                                    "result_names": ["win", "loss", "otwin", "otloss"]}
+                       }
+
+#
 # an Event says: who plays who (has a participant generator)
 # an Event knows: what are the possible Outcomes (i.e., the game type)
 # an Event knows: how to calculate the chance of each outcome (outcome generator, OG(pA, pB, Outcomes))

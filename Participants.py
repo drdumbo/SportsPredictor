@@ -61,64 +61,54 @@ class ParticipantFactory():
                     "participants": [participant_1, participant_2_list]}}
 	"""
     def __init__(self, pdetails: dict):
+        self._factory = {}
         try:
-            self.factory_type = pdetails["participant_choice"]
-            self.factory_plist = pdetails["participants"]
-            if self.factory_type == "fixed":
-                self._factory = Participants._fixed
-            elif self.factory_type == "random":
-                self._factory = Participants._random
-            elif self.factory_type == "sequential":
-                self._factory = Participants._sequential
+            self._factory["type"] = pdetails["participant_choice"]
+            self._factory["plist"] = pdetails["participants"]
+            if self._factory["type"] == "fixed":
+                self._factory["getnext"] = ParticipantFactory._fixed
+            elif self._factory["type"] == "random":
+                self._factory["getnext"] = ParticipantFactory._random
+            elif self._factory["type"] == "sequential":
+                self._factory["getnext"] = ParticipantFactory._sequential
             else:
-                raise ParticipantException(f"unrecognized participant factory: {self.factory_type}")
+                raise ParticipantException(f"unrecognized participant factory: {self._factory['type']}")
         except KeyError as ke:
             raise ParticipantException(
-                f"participant details need a 'participant_choice' and possibly 'participants': {pdetails}")
+                f"participant details need a 'participant_choice' and 'participants': {pdetails}")
 
-    def next(self)->dict:
-        return self._factory()
+    def next(self)->list:
+        return self._factory["getnext"](self)
 
+    # --------------------------------------------------------------------
+    # Participant Factory Methods
+    # --------------------------------------------------------------------
+    # Any Participant Factory Method needs to return a dictionary with 3 items:
+    #   name: name-of-participant (string)
+    #   details_type: codifies what the details will contain (string)
+    #   details: a dictionary of various details about the participant
+    # --------------------------------------------------------------------
 
-# --------------------------------------------------------------------
-# Participant Factory Methods
-# --------------------------------------------------------------------
-# Any Participant Factory Method needs to return a dictionary with 3 items:
-#   name: name-of-participant (string)
-#   details_type: codifies what the details will contain (string)
-#   details: a dictionary of various details about the participant
-# --------------------------------------------------------------------
-
-def _fixed(plist:list=None)->list:
-    # returns a fixed participant that is set up when the factory is first created (self.p2)
-    # FIXME.  put all this into the setup code and just return a fixed dictionary here.
-    if not plist:
-        plist=[]
-        plist[0] = self.factory_plist[0]
-        if isinstance(self.factory_plist[1], list):
-            plist[1] = self.factory_plist[1][0]
+    def _fixed(self)->list:
+        # returns a fixed participant that is set up when the factory is first created (self.p2)
+        # FIXME.  put all this into the setup code and just return a fixed dictionary here.
+        if isinstance(self._factory["plist"][1], list):     # TODO: make all refs to factory_plist[1] a list
+            p2 = self._factory["plist"][1][0]
         else:
-            plist[1] = self.factory_plist[1]
-    # set up plist in a cache and constantly return it
-    return plist
+            p2 = self._factory["plist"][1]
+        return [self._factory["plist"][0], p2]
 
-def _sequential()->list:
-    # get the next participant
-    if sequence_len < 0:
-        sequence_len = 0
-    else:
-        sequence = self.sequence + 1
-        if self.sequence >= len(self.factory_plist[1]):
-            self.sequence = 1
-    choice = (choice+1) % len(self.factory_plist[1])  # 1,2,... -> len()-1 -> 1, 2, ...
-    if choice == 0:
-        choice = choice +1      # element 0 is the 1st participant so skip this.
-    return [self.factory_plist[0], self.factory_plist[choice]]
+    def _sequential(self, current=0)->list:    # TODO: make all refs to factory_plist[1] a list
+        # get the next participant
+        current = current + 1
+        if current >= len(self._factory["plist"][1]):
+            current = 1
+        return [self._factory["plist"][0], self._factory["plist"][current]]
 
-def _random()->list:
-    # element [0] is guaranteed to be the 1st participant, so we select the 2nd participant from [1... end]
-    choice = random.randint(1, len(participantlist)-1)
-    return participantlist[choice]
+    def _random(self)->list:
+        # element [0] is guaranteed to be the 1st participant, so we select the 2nd participant from [1... end]
+        choice = random.randint(1, len(participantlist)-1)
+        return participantlist[choice]
 
-# --------------------------------------------------------------------
+    # --------------------------------------------------------------------
 
