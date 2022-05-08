@@ -1,4 +1,5 @@
 from Participants import ParticipantException, ParticipantFactory, Participant
+from Results import Result
 
 # an Event is something like a meeting, or a game, or whatever - between two participants
 # (which could be teams/people/machines/insects/...).
