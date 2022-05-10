@@ -47,8 +47,7 @@ class Event:
     def __init__(self, partlist: list):
         self.partlist = partlist    # a list of the participants in the event
         self.last_result = None     # the result of the previous event
-        self.these_results = None     # list of the results of this event; multiple outcomes possible
-        self.event_level = 0
+        self.these_results = None   # list of the results of this event; multiple outcomes possible
         self.campaign_count = 0
 
     def __repr__(self):
@@ -60,7 +59,7 @@ class Event:
     def set_result(self, sim: dict):
         print("TODO: set_result() not implemented")
 
-    def add(self, e: Event):
+    def add(self, e):
         # add a new event to follow this one
         if not self.these_results:
             raise EventsException(f"no results for Event: {e.str()}")
@@ -137,12 +136,7 @@ class EventFactory:
         pass
 
     def next(self):
-        # for now just try to generate it
         # FIXME.  This doesn't work.
-        #  -The event has to be known to exist.
-        #  -If it does, then the event will generate the participants, results, etc.
-
-        # so campaign has more events that are needed, so increment the count and generate the event
         self._campaign_count = self._campaign_count + 1
         partlist = EventFactory._participant_factory.next()
         return Event( partlist )    # FIXME.  Put in the other parameters that are needed

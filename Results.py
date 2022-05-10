@@ -19,8 +19,11 @@ class ResultAggregate:
         else:
             print("ResultAggregate can not be built more than once")
 
-    def increment(self, result: str, amount: int)->int:
-        # increments the particular result
+    def __repr__(self):
+        return f"{self.__class__.__name__}: ({ResultAggregate.aggregate})"
+
+    def increment(self, result: str, amount: int=1)->int:
+        # increments the result by the amount (default=1)
         # returns the new total of the result
         try:
             ResultAggregate.aggregate[ result ] = ResultAggregate.aggregate[ result ] + amount
@@ -46,10 +49,40 @@ class Result:
 	what happened after the event, e.g., TeamA has win/loss/tie/....
 	"""
 
+    def __init__(self, e):
+        self.this_event = e     # the 'parent' event, for which this is the result
+        self.next_event = None  # the 'next' event: get this from EventFactory.
+
+
+class SimulatedResult(Result):
+    """
+	what happened after the event, e.g., TeamA has win/loss/tie/....
+	there is one specific result generated as part of a simulation
+	"""
+
     def __init__(self, e, name: str, score: tuple=None, p: float=None):
         self.this_event = e     # the 'parent' event, for which this is the result
         self.next_event = None  # the 'next' event: get this from EventFactory.
         self.result = name      # the name of the result (e.g., "win", "loss", etc)
         self.score = score      # a tuple of scores (Home, Away)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}: ({self.result}, ({self.score}))"
+
+
+
+class StatisticalResult(Result):
+    """
+	what happened after the event, e.g., TeamA has win/loss/tie/....
+	a series of all possible (nonzero probability) results are generated, with probabilities attached to each.
+	"""
+
+    def __init__(self, e, name: str, score: tuple=None, p: float=None):
+        self.this_event = e     # the 'parent' event, for which this is the result
+        self.next_event = None  # the 'next' event: get this from EventFactory.
+        self.result = name      # the name of the result (e.g., "win", "loss", etc)
         self.probability = p    # the probability of this result
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}: ({self.result}, {self.probability})"
 
