@@ -51,7 +51,7 @@ class Event:
         self.campaign_count = 0
 
     def __repr__(self):
-        return f"Event {self.partlist[0]} {self.these_results} vs {self.partlist[1]} {self.these_results}"
+        return f"Event {self.partlist[0]['name']} vs {self.partlist[1]['name']}"
 
     def consolidate(self, sim: dict):
         print("TODO: consolidate() not implemented")
@@ -62,7 +62,7 @@ class Event:
     def add(self, e):
         # add a new event to follow this one
         if not self.these_results:
-            raise EventsException(f"no results for Event: {e.str()}")
+            raise EventException(f"no results for Event: {e}")
         for res in self.these_results:
             # e.last_result = res
             # res.add(e)

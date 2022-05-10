@@ -24,7 +24,7 @@ def expected_goals_reg(team_for: Participant, team_against: Participant)->tuple:
     ta_goals = numpy.random.poisson(ta_avg_goals_per_game)
     return tf_goals, ta_goals
 
-def expected_goals_ot(team_for: Participant, team_against: Participant)->int:
+def expected_goals_ot(team_for: Participant, team_against: Participant)->tuple:
     # returns the points score by "team_for" in regulation time against "team_against"
     tf_avg_goals_per_ot = tf_avg_goals_per_game * overtime / regulation
     ta_avg_goals_per_ot = ta_avg_goals_per_game * overtime / regulation
@@ -48,9 +48,13 @@ def expected_goals_ot(team_for: Participant, team_against: Participant)->int:
                 return 0, 1 # away team wins
 
 
-def expected_goals_so(team_for: Participant, team_against: Participant)->int:
+def expected_goals_so(team_for: Participant, team_against: Participant)->tuple:
     # returns the points score by "team_for" in regulation time against "team_against"
-    pass
-
+    tf_goals = numpy.random.randint(0,5)
+    ta_goals = numpy.random.randint(0,5)
+    while tf_goals == ta_goals:
+        tf_goals = tf_goals + numpy.random.randint(0, 1)
+        ta_goals = ta_goals + numpy.random.randint(0, 1)
+    return tf_goals, ta_goals
 
 
