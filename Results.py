@@ -1,4 +1,3 @@
-from Events import Event
 
 # --------------------------------------------------------------------
 
@@ -47,7 +46,7 @@ class Result:
 	what happened after the event, e.g., TeamA has win/loss/tie/....
 	"""
 
-    def __init__(self, e: Event, name: str, p: float):
+    def __init__(self, e, name: str, p: float):
         self.this_event = e      # the 'parent' event, for which this is the result
         self.next_event = None   # the 'next' event: get this from EventFactory.
         self.result = name        # the name of the result (e.g., "win", "loss", etc)

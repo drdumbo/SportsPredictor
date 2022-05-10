@@ -56,7 +56,11 @@ class ParticipantFactory():
 	    => fixed (always chooses the same Participant).
 
 	    pdetails = {"participant_choice": "fixed/random/sequential",
-                    "participants": [participant_1, participant_2_list]}}
+                    "participants": [participant_list]}}
+
+        participant = { "name": "Toronto Maple Leafs",
+                        "details_type": "short_team_stats",
+                        "details": {"WIN": 54, "LOSS": 18, "TIES": 0, "OTLOSS": 7, "GF": 312, "GA": 252}},
 	"""
     def __init__(self, pdetails: dict):
         self._factory = {}
@@ -90,23 +94,25 @@ class ParticipantFactory():
     def _fixed(self)->list:
         # returns a fixed participant that is set up when the factory is first created (self.p2)
         # FIXME.  put all this into the setup code and just return a fixed dictionary here.
-        if isinstance(self._factory["plist"][1], list):     # TODO: make all refs to factory_plist[1] a list
-            p2 = self._factory["plist"][1][0]
-        else:
-            p2 = self._factory["plist"][1]
-        return [self._factory["plist"][0], p2]
+        p1 = self._factory["plist"][0]
+        p2 = self._factory["plist"][1]
+        return [p1, p2]
 
     def _sequential(self, current=0)->list:    # TODO: make all refs to factory_plist[1] a list
         # get the next participant
         current = current + 1
-        if current >= len(self._factory["plist"][1]):
+        if current >= len(self._factory["plist"])-1:
             current = 1
-        return [self._factory["plist"][0], self._factory["plist"][current]]
+        p1 = self._factory["plist"][0]
+        p2 = self._factory["plist"][current]
+        return [p1, p2]
 
     def _random(self)->list:
         # element [0] is guaranteed to be the 1st participant, so we select the 2nd participant from [1... end]
-        choice = random.randint(1, len(participantlist)-1)
-        return participantlist[choice]
+        choice = random.randint(1, len(self._factory["plist"])-1)
+        p1 = self._factory["plist"][0]
+        p2 = self._factory["plist"][choice]
+        return [p1, p2]
 
     # --------------------------------------------------------------------
 

@@ -12,8 +12,7 @@ class OutcomeHockey(Outcome):
         # results are fixed at 50/50 win/loss.  But, should do a Poisson Distribution of goals
         # for & against, based on each team's overall GOALS-FOR and GOALS-AGAINST stats
         # regulation time result
-        reg1 = Hockey.expected_goals_reg(p1, p2)
-        reg2 = Hockey.expected_goals_reg(p2, p1)
+        reg1, reg2 = Hockey.expected_goals_reg(p1, p2)
         # overtime if necessary
         if (reg1 == reg2):
             ot1, ot2 = Hockey.expected_goals_ot(p1, p2)

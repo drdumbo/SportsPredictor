@@ -55,7 +55,7 @@ participantlist = [ participant_TML, participant_TBL, participant_BB, participan
 simulation1_details = {"campaign": {"type": "best-of-series",
                                     "length": 7},
                        "versus": {"participant_choice": "fixed",
-                                "participants": [participant_TML, [participant_TBL]]},
+                                "participants": [participant_TML, participant_TBL]},
                        "outcomes": {"method": "fixed_outcome_statistic",
                                     "result_names": ["win", "loss"]}
                        }
@@ -65,7 +65,7 @@ simulation1_details = {"campaign": {"type": "best-of-series",
 simulation2_details = {"campaign": {"type": "fixed-series",
                                     "length": 7},
                        "versus": {"participant_choice": "fixed",
-                                "participants": [participant_TML, [participant_TBL]]},
+                                "participants": participantlist},
                        "outcomes": {"method": "fixed_outcome_statistic",
                                     "result_names": ["win", "loss", "tie"]}
                        }
@@ -75,7 +75,7 @@ simulation2_details = {"campaign": {"type": "fixed-series",
 simulation3_details = {"campaign": {"type": "fixed-series",
                                     "length": 7},
                        "versus": {"participant_choice": "random",
-                                "participants": [participant_TML, participantlist[1:]]},
+                                "participants": participantlist},
                        "outcomes": {"method": "fixed_outcome_statistic",
                                     "result_names": ["win", "loss", "otwin", "otloss", "tie"]}
                        }
@@ -85,7 +85,7 @@ simulation3_details = {"campaign": {"type": "fixed-series",
 simulation4_details = {"campaign": {"type": "fixed-series",
                                     "length": 7},
                        "versus": {"participant_choice": "sequential",
-                                "participants": [participant_TML, participantlist[1:]]},
+                                "participants": participantlist},
                        "outcomes": {"method": "fixed_outcome_statistic",
                                     "result_names": ["win", "loss", "otwin", "otloss"]}
                        }
@@ -103,8 +103,6 @@ sim = simulation1_details
 
 pprint(sim, depth=4)
 
-# FIXME.  Need to pass in some parameters to the EventFactory so that sth reasonable is generated
-# FIXME.  At minimum we need to maximum size of the tree we are generating.
 event_factory = EventFactory(sim)
 event_tree = None
 

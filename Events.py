@@ -31,7 +31,7 @@ class EventException(BaseException):
 
 # --------------------------------------------------------------------
 
-class Event():
+class Event:
     """
 	an event, e.g., a game between two teams
 	these form nodes in a tree.
@@ -70,7 +70,7 @@ class Event():
 
 # --------------------------------------------------------------------
 
-class EventFactory():
+class EventFactory:
     """"
 	is a factory for Events
 	    - sets the participants in the Event (via participant_factory)
@@ -100,19 +100,22 @@ class EventFactory():
 
     def __init__(self, details: dict):
         if not EventFactory._event_factory:
-            EventFactory.type = details["campaign"]["type"]
-            if EventFactory.type == "best-of-series":  # best-of-n games against same opponent
+            self._details = details
+            type = details["campaign"]["type"]
+            if type == "best-of-series":  # best-of-n games against same opponent
                 EventFactory._event_factory = self._event_factory_best_of
                 EventFactory._participant_factory = ParticipantFactory(details["versus"])
-            elif EventFactory.type == "fixed-series":  # fixed length campaign, n games against same opponent
+            elif type == "fixed-series":  # fixed length campaign, n games against same opponent
                 EventFactory._event_factory = self._event_factory_fixed
                 EventFactory._participant_factory = ParticipantFactory(details["versus"])
             else:
-                raise EventException(f"unknown event factory type: {EventFactory.type}")
+                raise EventException(f"unknown event factory type: {type}")
 
     def _event_factory_best_of(self, current=0):
         # appropriate for a campaign of "best of" n
+        length = self._details["campaign"]["length"]
         # generate players (participant factory)
+
         # determine outcomes(s)
         # determine if there is a victor
         pass
