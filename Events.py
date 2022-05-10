@@ -57,16 +57,15 @@ class Event:
         print("TODO: consolidate() not implemented")
 
     def set_result(self, sim: dict):
-        print("TODO: set_result() not implemented")
+        print("TODO: set_result() not implemented")         # TODO: FIXME: Implement this
 
     def add(self, e):
         # add a new event to follow this one
         if not self.these_results:
             raise EventException(f"no results for Event: {e}")
-        for res in self.these_results:
+        for res in self.these_results:                      # TODO: FIXME: Implement this
             # e.last_result = res
             # res.add(e)
-
             pass
 
     def get_campaign_count(self):
