@@ -100,6 +100,7 @@ class EventFactory:
 
     def __init__(self, details: dict):
         if not EventFactory._event_factory:
+            self._campaign_count = 0
             self._details = details
             type = details["campaign"]["type"]
             if type == "best-of-series":  # best-of-n games against same opponent
@@ -132,6 +133,9 @@ class EventFactory:
         # FIXME.  This doesn't work.
         #  -The event has to be known to exist.
         #  -If it does, then the event will generate the participants, results, etc.
+
+        # so campaign has more events that are needed, so increment the count and generate the event
+        self._campaign_count = self._campaign_count + 1
         partlist = EventFactory._participant_factory.next()
         return Event( partlist )    # FIXME.  Put in the other parameters that are needed
 

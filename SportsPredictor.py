@@ -35,6 +35,7 @@ from pprint import pprint
 # MAIN FUNCTION STARTS HERE
 # ====================================================================
 
+# TODO: change these to Participant objects
 participant_TML = { "name": "Toronto Maple Leafs",
         "details_type": "short_team_stats",
         "details": {"WIN": 54, "LOSS": 18, "TIES": 0, "OTLOSS": 7, "GF": 312, "GA": 252}}

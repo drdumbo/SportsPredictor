@@ -98,7 +98,7 @@ class ParticipantFactory():
         p2 = self._factory["plist"][1]
         return [p1, p2]
 
-    def _sequential(self, current=0)->list:    # TODO: make all refs to factory_plist[1] a list
+    def _sequential(self, current=0)->list:
         # get the next participant
         # returnt he 1st element of the list, then sequentially choose the 2nd from the remaining elements.
         current = current + 1
