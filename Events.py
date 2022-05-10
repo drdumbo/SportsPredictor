@@ -49,6 +49,10 @@ class Event:
         self.last_result = None     # the result of the previous event
         self.these_results = None     # list of the results of this event; multiple outcomes possible
         self.event_level = 0
+        self.campaign_count = 0
+
+    def __repr__(self):
+        return f"Event {self.partlist[0]} {self.these_results} vs {self.partlist[1]} {self.these_results}"
 
     def consolidate(self, sim: dict):
         print("TODO: consolidate() not implemented")
@@ -56,14 +60,18 @@ class Event:
     def set_result(self, sim: dict):
         print("TODO: set_result() not implemented")
 
-    def add(self, e):
+    def add(self, e: Event):
         # add a new event to follow this one
         if not self.these_results:
-            raise EventException(f"cannot have a new event because current event has no result")
+            raise EventsException(f"no results for Event: {e.str()}")
         for res in self.these_results:
             # e.last_result = res
             # res.add(e)
+
             pass
+
+    def get_campaign_count(self):
+        return self._campaign_count
 
 
 
