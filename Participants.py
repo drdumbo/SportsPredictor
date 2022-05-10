@@ -93,13 +93,14 @@ class ParticipantFactory():
 
     def _fixed(self)->list:
         # returns a fixed participant that is set up when the factory is first created (self.p2)
-        # FIXME.  put all this into the setup code and just return a fixed dictionary here.
+        # always returns the 1st and 2nd elements of teh particpant list in fixed order
         p1 = self._factory["plist"][0]
         p2 = self._factory["plist"][1]
         return [p1, p2]
 
     def _sequential(self, current=0)->list:    # TODO: make all refs to factory_plist[1] a list
         # get the next participant
+        # returnt he 1st element of the list, then sequentially choose the 2nd from the remaining elements.
         current = current + 1
         if current >= len(self._factory["plist"])-1:
             current = 1
@@ -109,6 +110,7 @@ class ParticipantFactory():
 
     def _random(self)->list:
         # element [0] is guaranteed to be the 1st participant, so we select the 2nd participant from [1... end]
+        # return the 1st element of the list, then randomly choose the 2nd from the remaining elements.
         choice = random.randint(1, len(self._factory["plist"])-1)
         p1 = self._factory["plist"][0]
         p2 = self._factory["plist"][choice]
