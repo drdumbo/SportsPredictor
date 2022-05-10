@@ -24,5 +24,5 @@ class Campaign:
             else:
                 raise CampaignException(f"unrecognized campaign type: {camp_type}")
         except KeyError as ke:
-            raise CampaignException(f"campaign details missing expected key(s): {self._details["campaign"]}")
+            raise CampaignException(f"campaign details missing expected key(s): {self._details['campaign']}")
 
