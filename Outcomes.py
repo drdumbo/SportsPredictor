@@ -44,10 +44,10 @@ class OutcomeHockey(Outcome):
             ot1, ot2, so1, so2 = 0, 0, 0, 0
             reg1, reg2 = Hockey.expected_goals_reg(p1, p2)
             # overtime if necessary
-            if (ot and reg1 == reg2):
+            if (ot and (reg1 == reg2)):
                 ot1, ot2 = Hockey.expected_goals_ot(p1, p2)
                 # shootout will be necessary if ot1=ot2=0
-                if (so and ot1 == ot2):
+                if (so and (ot1 == ot2)):
                     so1, so2 = Hockey.expected_goals_so(p1, p2)
 
             # got the scores
@@ -56,9 +56,9 @@ class OutcomeHockey(Outcome):
 
             # classify the scores
             if len(resultlist) in [2,3]:
-                if reg1 > reg2:
+                if self.goals1 > self.goals2:
                     self.outcomes["win"] = 1
-                elif reg1 == reg2:
+                elif self.goals1 == self.goals2:
                     self.outcomes["tie"] = 1
                 else:
                     self.outcomes["loss"] = 1
@@ -71,13 +71,18 @@ class OutcomeHockey(Outcome):
                     elif ot1 < ot2:
                         self.outcomes["otloss"] = 1
                     else:
-                        self.outcomes["tie"] = 1
+                        if so1 < so2:
+                            self.outcomes["otloss"] = 1     # soloss?
+                        elif so1 > so2:
+                            self.outcomes["otwin"] = 1      # sowin?
+                        else:
+                            self.outcomes["tie"] = 1
                 else:       # reg1 < reg2
                     self.outcomes["loss"] = 1
         except KeyError as ke:
             raise OutcomeException(f"{self.__class__.__name__}: missing key: {ke}")
 
     def __repr__(self):
-        return f"{self.__class__.__name__}: {self.p1} vs {self.p2}: {self.goals1} -- {self.goals2}: {self.outcomes}"
+        return f"{self.__class__.__name__}: {self.p1['name']} vs {self.p2['name']}: {self.goals1} -- {self.goals2}: {self.outcomes}"
 
 

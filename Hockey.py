@@ -26,6 +26,8 @@ def expected_goals_reg(team_for: Participant, team_against: Participant)->tuple:
 
 def expected_goals_ot(team_for: Participant, team_against: Participant)->tuple:
     # returns the points score by "team_for" in regulation time against "team_against"
+    tf_avg_goals_per_game = team_for["details"]["GF"] / season_length
+    ta_avg_goals_per_game = team_against["details"]["GF"] / season_length
     tf_avg_goals_per_ot = tf_avg_goals_per_game * overtime / regulation
     ta_avg_goals_per_ot = ta_avg_goals_per_game * overtime / regulation
     # generate a random number to calculate the number of goals in the overtime period
