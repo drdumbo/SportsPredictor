@@ -36,69 +36,79 @@ from pprint import pprint
 # ====================================================================
 
 # TODO: change these to Participant objects
-participant_TML = { "name": "Toronto Maple Leafs",
-        "details_type": "short_team_stats",
-        "details": {"WIN": 54, "LOSS": 18, "TIES": 0, "OTLOSS": 7, "GF": 312, "GA": 252}}
-participant_TBL = { "name": "Tampa Bay Lightning",
-        "details_type": "short_team_stats",
-        "details": {"WIN": 51, "LOSS": 23, "TIES": 0, "OTLOSS": 8, "GF": 285, "GA": 228}}
-participant_BB = { "name": "Boston Bruins",
-        "details_type": "short_team_stats",
-        "details": {"WIN": 51, "LOSS": 26, "TIES": 0, "OTLOSS": 5, "GF": 253, "GA": 218}}
+participant_TML = {"name": "Toronto Maple Leafs",
+                   "details_type": "short_team_stats",
+                   "details": {"WIN": 54, "LOSS": 18, "TIES": 0, "OTLOSS": 7, "GF": 312, "GA": 252}}
+participant_TBL = {"name": "Tampa Bay Lightning",
+                   "details_type": "short_team_stats",
+                   "details": {"WIN": 51, "LOSS": 23, "TIES": 0, "OTLOSS": 8, "GF": 285, "GA": 228}}
+participant_BB = {"name": "Boston Bruins",
+                  "details_type": "short_team_stats",
+                  "details": {"WIN": 51, "LOSS": 26, "TIES": 0, "OTLOSS": 5, "GF": 253, "GA": 218}}
 participant_WAC = {"name": "Washington Capitals",
-        "details_type": "short_team_stats",
-        "details": {"WIN": 44, "LOSS": 26, "TIES": 0, "OTLOSS": 12, "GF": 270, "GA": 242}}
+                   "details_type": "short_team_stats",
+                   "details": {"WIN": 44, "LOSS": 26, "TIES": 0, "OTLOSS": 12, "GF": 270, "GA": 242}}
 
-participantlist = [ participant_TML, participant_TBL, participant_BB, participant_WAC ]
+participantlist = [participant_TML, participant_TBL, participant_BB, participant_WAC]
 
 # best-of-n series with fixed opponents
 # ... each game is win/loss (2)
 
-simulation1_details = { "competition": "hockey",                # the nature of the competitions
-                        "campaign": {"type": "best-of-series",    # the length of the competitions
+simulation1_details = {"competition": "hockey",  # the nature of the competitions
+                       # campaign details: type=fixed-series/best-of-series
+                       "campaign": {"type": "best-of-series",
                                     "length": 7},
-                       "versus": {"participant_choice": "fixed",    # who is competing
-                                "participants": [participant_TML, participant_TBL]},
-                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
+                       # who is competing: fixed/sequential/random = participant_choice
+                       "versus": {"participant_choice": "fixed",
+                                  "participants": [participant_TML, participant_TBL]},
+                       # how outcomes are decided: fixed_outcome_simulation / multi_outcome_statistics
+                       "outcomes": {"method": "fixed_outcome_simulation",
                                     "result_names": ["win", "loss"]}
-                        }
+                       }
 
 # fixed length series with fixed opponents
 # ... each game is win / loss / tie (3)
 
-simulation2_details = { "competition": "hockey",                # the nature of the competitions
-                        "campaign": {"type": "fixed-series",    # the length of the competition
+simulation2_details = {"competition": "hockey",  # the nature of the competitions
+                       # campaign details: type=fixed-series/best-of-series
+                       "campaign": {"type": "fixed-series",
                                     "length": 7},
-                       "versus": {"participant_choice": "fixed",    # who is competing
-                                "participants": participantlist},
-                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
+                       # who is competing: fixed/sequential/random = participant_choice
+                       "versus": {"participant_choice": "fixed",
+                                  "participants": participantlist},
+                       # how outcomes are decided: fixed_outcome_simulation / multi_outcome_statistics
+                       "outcomes": {"method": "fixed_outcome_simulation",
                                     "result_names": ["win", "loss", "tie"]}
                        }
 
-
 # fixed length series with one fixed & one random
 # each game is reg-win / reg-loss / ot-win / ot-loss / tie (5)
-simulation3_details = { "competition": "hockey",            # the nature of the competition
-                        "campaign": {"type": "fixed-series",    # the length of the4 competition
+simulation3_details = {"competition": "hockey",  # the nature of the competition
+                       # campaign details: type=fixed-series/best-of-series
+                       "campaign": {"type": "fixed-series",
                                     "length": 7},
-                       "versus": {"participant_choice": "random",   # who is competing
-                                "participants": participantlist},
-                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
+                       # who is competing: fixed/sequential/random = participant_choice
+                       "versus": {"participant_choice": "random",
+                                  "participants": participantlist},
+                       # how outcomes are decided: fixed_outcome_simulation / multi_outcome_statistics
+                       "outcomes": {"method": "fixed_outcome_simulation",
                                     "result_names": ["win", "loss", "otwin", "otloss", "tie"]}
                        }
 
 # fixed length series with one fixed & one sequential
 # each game is reg-win / reg-loss / ot-win / ot-loss (4)
-simulation4_details = { "competition": "hockey",                # the nature of the competitions
-                        "campaign": {"type": "fixed-series",    # the length of the competitions
+simulation4_details = {"competition": "hockey",  # the nature of the competitions
+                       # campaign details: type=fixed-series/best-of-series
+                       "campaign": {"type": "fixed-series",
                                     "length": 7},
-                       "versus": {"participant_choice": "sequential",   # who is competing
-                                "participants": participantlist},
-                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
+                       # who is competing: fixed/sequential/random = participant_choice
+                       "versus": {"participant_choice": "sequential",
+                                  "participants": participantlist},
+                       # how outcomes are decided: fixed_outcome_simulation / multi_outcome_statistics
+                       "outcomes": {"method": "fixed_outcome_simulation",
                                     "result_names": ["win", "loss", "otwin", "otloss"]}
                        }
 
-#
 # an Event says: who plays who (has a participant generator)
 # an Event knows: what are the possible Outcomes (i.e., the game type)
 # an Event knows: how to calculate the chance of each outcome (outcome generator, OG(pA, pB, Outcomes))
@@ -117,12 +127,16 @@ event_tree = None
 # get the next event
 while (event := event_factory.next()):
     # produce a result for the event, and attach it to the event
+    print(f"new event: {event}")
     event.set_result(sim)
+    print(f"... event has result set: {event}")
 
     # put the event and its result on the tree
     if not event_tree:
+        print("set up initial event tree")
         event_tree = event
     else:
+        print("... add to event tree")
         event_tree.add(event)
 
     # consolidate the tree
@@ -135,6 +149,6 @@ while (event := event_factory.next()):
 # the event tree is consolidated
 # do some analysis or print out the results
 
-event_tree.print()
+print(event_tree)
 
 # Connor was here!!!

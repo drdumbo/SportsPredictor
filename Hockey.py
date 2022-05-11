@@ -52,7 +52,7 @@ def expected_goals_ot(team_for: Participant, team_against: Participant)->tuple:
 
 def expected_goals_so(team_for: Participant, team_against: Participant)->tuple:
     # returns the points score by "team_for" in regulation time against "team_against"
-    # TODO.  This is just not right - there is certainly a better way to do this that involves
+    # TODO.  Ugly & Wrong - there is certainly a better way to do this that involves
     # comparing the two teams, their SO performances, etc etc.  But without focusing on any
     # of those details, this is what we do for now.
     tf_goals = np.random.randint(0,5)

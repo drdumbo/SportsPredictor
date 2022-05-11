@@ -124,26 +124,36 @@ class EventFactory:
             else:
                 raise EventException(f"unknown event factory type: {type}")
 
-    def _event_factory_best_of(self, current=0):
+    def _get_current_wins(self)->int:
+        # gets the current number of wins so far
+
+    # returns True if a new event needs to be generated
+    def _event_factory_best_of(self, current=0)->bool:
         # appropriate for a campaign of "best of" n
         length = self._details["campaign"]["length"]
-        # generate players (participant factory)
+        need_to_win = (length+1)/2
+        # check if the current set of events has a winner
+        current_wins = _get_current_wins()
+        # print(f"... event factory best-of: current wins / need to win = {current_wins}, {need_to_win}")
+        return (max(current_wins) < need_to_win)
 
-        # determine outcomes(s)
-        # determine if there is a victor
-        pass
-
-    def _event_factory_fixed(self, current=0):
+    # returns True if a new event needs to be generated
+    def _event_factory_fixed(self, current=0)->bool:
         # appropriate for a campaign of exactly n
         # generate players
         # determine outcomes(s)
         # determine if there is a victor
-        pass
+        length = self._details["campaign"]["length"]
+        # print(f"... event factory fixed: current games / total games = {self._campaign_count}, {length}")
+        return (self._campaign_count < length)
 
     def next(self):
         # FIXME.  This doesn't work.
-        self._campaign_count = self._campaign_count + 1
-        partlist = EventFactory._participant_factory.next()
-        return Event( partlist )    # FIXME.  Put in the other parameters that are needed
+        e = None
+        if self._event_factory():
+            self._campaign_count = self._campaign_count + 1
+            partlist = EventFactory._participant_factory.next()
+            e = Event( partlist )
+        return e
 
 
