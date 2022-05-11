@@ -53,41 +53,48 @@ participantlist = [ participant_TML, participant_TBL, participant_BB, participan
 
 # best-of-n series with fixed opponents
 # ... each game is win/loss (2)
-simulation1_details = {"campaign": {"type": "best-of-series",
+
+simulation1_details = { "competition": "hockey",                # the nature of the competitions
+                        "campaign": {"type": "best-of-series",    # the length of the competitions
                                     "length": 7},
-                       "versus": {"participant_choice": "fixed",
+                       "versus": {"participant_choice": "fixed",    # who is competing
                                 "participants": [participant_TML, participant_TBL]},
-                       "outcomes": {"method": "fixed_outcome_statistic",
+                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
                                     "result_names": ["win", "loss"]}
-                       }
+                        }
 
 # fixed length series with fixed opponents
 # ... each game is win / loss / tie (3)
-simulation2_details = {"campaign": {"type": "fixed-series",
+
+simulation2_details = { "competition": "hockey",                # the nature of the competitions
+                        "campaign": {"type": "fixed-series",    # the length of the competition
                                     "length": 7},
-                       "versus": {"participant_choice": "fixed",
+                       "versus": {"participant_choice": "fixed",    # who is competing
                                 "participants": participantlist},
-                       "outcomes": {"method": "fixed_outcome_statistic",
+                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
                                     "result_names": ["win", "loss", "tie"]}
                        }
 
+
 # fixed length series with one fixed & one random
 # each game is reg-win / reg-loss / ot-win / ot-loss / tie (5)
-simulation3_details = {"campaign": {"type": "fixed-series",
+simulation3_details = { "competition": "hockey",            # the nature of the competition
+                        "campaign": {"type": "fixed-series",    # the length of the4 competition
                                     "length": 7},
-                       "versus": {"participant_choice": "random",
+                       "versus": {"participant_choice": "random",   # who is competing
                                 "participants": participantlist},
-                       "outcomes": {"method": "fixed_outcome_statistic",
+                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
                                     "result_names": ["win", "loss", "otwin", "otloss", "tie"]}
                        }
 
 # fixed length series with one fixed & one sequential
 # each game is reg-win / reg-loss / ot-win / ot-loss (4)
-simulation4_details = {"campaign": {"type": "fixed-series",
+simulation4_details = { "competition": "hockey",                # the nature of the competitions
+                        "campaign": {"type": "fixed-series",    # the length of the competitions
                                     "length": 7},
-                       "versus": {"participant_choice": "sequential",
+                       "versus": {"participant_choice": "sequential",   # who is competing
                                 "participants": participantlist},
-                       "outcomes": {"method": "fixed_outcome_statistic",
+                       "outcomes": {"method": "fixed_outcome_statistic",    # how outcomes are decided
                                     "result_names": ["win", "loss", "otwin", "otloss"]}
                        }
 

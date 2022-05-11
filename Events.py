@@ -1,5 +1,6 @@
 from Participants import ParticipantException, ParticipantFactory, Participant
 from Results import Result
+from Outcomes import OutcomeHockey
 
 # an Event is something like a meeting, or a game, or whatever - between two participants
 # (which could be teams/people/machines/insects/...).
@@ -57,7 +58,12 @@ class Event:
         print("TODO: consolidate() not implemented")
 
     def set_result(self, sim: dict):
-        print("TODO: set_result() not implemented")         # TODO: FIXME: Implement this
+        if sim["competition"] == "hockey":          # TODO: add more types of competition handling
+            outcome = OutcomeHockey(sim["outcomes"], self.partlist[0], self.partlist[1])
+            print(outcome)
+            self.these_results = outcome.outcomes
+        else:
+            raise EventException(f"competition type unimplemented: {sim['competition']}")
 
     def add(self, e):
         # add a new event to follow this one
@@ -69,7 +75,7 @@ class Event:
             pass
 
     def get_campaign_count(self):
-        return self._campaign_count
+        return self.campaign_count
 
 
 
